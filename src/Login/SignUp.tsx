@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  PixelRatio,
 } from "react-native";
 import { withNavigation } from "react-navigation";
 import firebase from "../../firebase/firebaseSetup";
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: Constants.BUTTONHEIGHT,
-    width: 100,
+    width: 100 * PixelRatio.getFontScale(),
     backgroundColor: Constants.LIGHTGRAY,
     marginTop: 30,
     borderRadius: Constants.BORDERRADIUS,

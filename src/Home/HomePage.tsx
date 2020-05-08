@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Image,
+  PixelRatio,
 } from "react-native";
 import { firestore } from "firebase";
 import * as Constants from "../../Constants";
@@ -22,6 +23,7 @@ export default class HomePage extends React.Component<any, any> {
       totalTests: "",
       lastTest: "",
     };
+    console.log("Font scale:", PixelRatio.getFontScale());
   }
   _isMounted: boolean = false;
 
@@ -170,7 +172,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: Constants.BUTTONHEIGHT,
-    width: 100,
+    width: 100 * PixelRatio.getFontScale(),
     backgroundColor: Constants.LIGHTGRAY,
     marginTop: 30,
     borderRadius: Constants.BORDERRADIUS,

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  PixelRatio,
 } from "react-native";
 import firebase from "../../firebase/firebaseSetup";
 import { withNavigation } from "react-navigation";
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: Constants.BUTTONHEIGHT,
-    width: 120,
+    width: 120 * PixelRatio.getFontScale(),
     backgroundColor: Constants.LIGHTGRAY,
     marginTop: 20,
     borderRadius: Constants.BORDERRADIUS,

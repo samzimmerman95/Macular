@@ -6,10 +6,12 @@ import {
   Dimensions,
   FlatList,
   TouchableOpacity,
+  PixelRatio,
 } from "react-native";
 import ResultGrid from "./ResultGrid";
 import firebase from "../../firebase/firebaseSetup";
 import * as Constants from "../../Constants";
+import { Header } from "react-native/Libraries/NewAppScreen";
 
 const width = Dimensions.get("window").width;
 
@@ -47,7 +49,8 @@ export default class ResultPage1 extends React.Component<any, any> {
                 <FlatList
                   scrollEnabled={true}
                   horizontal={true}
-                  style={styles.scrollContainer}
+                  // style={styles.scrollContainer}
+                  contentContainerStyle={styles.scrollContainer}
                   pagingEnabled={true}
                   decelerationRate={0}
                   snapToInterval={width}
@@ -58,11 +61,12 @@ export default class ResultPage1 extends React.Component<any, any> {
                 />
               ) : (
                 // This view that's here and not above makes the switching work...
-                <View>
+                <View style={styles.container}>
                   <FlatList
                     scrollEnabled={true}
                     horizontal={true}
-                    style={styles.scrollContainer}
+                    // style={styles.scrollContainer}
+                    contentContainerStyle={styles.scrollContainer}
                     pagingEnabled={true}
                     decelerationRate={0}
                     snapToInterval={width}
@@ -102,31 +106,6 @@ export default class ResultPage1 extends React.Component<any, any> {
             Go to the Test tab to complete your first test!
           </Text>
         )}
-
-        {/* <View style={styles.belowScroll}>
-          <TouchableOpacity
-            style={[
-              this.state.eye == "Left" ? styles.selectedButton : styles.button,
-            ]}
-            onPress={() => this.setState({ eye: "Left" })}
-          >
-            <Text> Left </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              this.state.eye == "Right" ? styles.selectedButton : styles.button,
-            ]}
-            onPress={() => this.setState({ eye: "Right" })}
-          >
-            <Text> Right </Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity
-          style={styles.refreshButton}
-          onPress={() => this.props.navigation.navigate("ResultLoad")}
-        >
-          <Text> Refresh </Text>
-        </TouchableOpacity> */}
       </View>
     );
   }
@@ -137,38 +116,35 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
-  scrollContainer: {},
+  scrollContainer: {
+    // backgroundColor: "yellow",
+  },
   upper: {
-    flex: 3,
-    backgroundColor: "#abc",
-    // marginTop: 40,
-    // height: Dimensions.get("window").width + 40,
+    // flex: 4, //7
+    // backgroundColor: "#abc",
+    height: width + 45 + 40 * PixelRatio.getFontScale(),
     // alignItems: "center",
     // justifyContent: "flex-start",
   },
   belowScroll: {
-    flex: 1,
-    // marginTop: 30,
+    flex: 1, //3
     flexDirection: "row",
-  },
-  grid: {
-    // flexDirection: 'row',
-    backgroundColor: "#000",
-    height: Dimensions.get("window").width,
-    width: Dimensions.get("window").width,
+    alignItems: "center",
+    // backgroundColor: "#345",
   },
   view: {
     alignItems: "center",
-    alignSelf: "center",
-    justifyContent: "center",
-    // backgroundColor: "orange",
+    // alignSelf: "center",
+    justifyContent: "flex-start",
+    backgroundColor: "orange",
     width: width - 20,
     marginLeft: 10,
     marginRight: 10,
-    height: width - 20,
+    height: width - 50,
     borderRadius: 10,
+    marginTop: 5,
   },
   button: {
     backgroundColor: Constants.LIGHTGRAY,
@@ -179,6 +155,7 @@ const styles = StyleSheet.create({
     borderRadius: Constants.BORDERRADIUS,
     marginLeft: 5,
     marginRight: 5,
+    // marginTop: 50,
   },
   selectedButton: {
     backgroundColor: Constants.LIGHTGRAY,
@@ -191,12 +168,14 @@ const styles = StyleSheet.create({
     borderRadius: Constants.BORDERRADIUS,
     marginLeft: 5,
     marginRight: 5,
+    // marginTop: 50,
   },
   title: {
     fontSize: Constants.FONTSIZE,
-    marginBottom: 5,
+    // marginBottom: 5,
     fontWeight: Constants.BOLDFONT,
     alignSelf: "center",
+    marginTop: 50,
   },
   textInstructions: {
     fontSize: Constants.FONTSIZE,
@@ -208,14 +187,5 @@ const styles = StyleSheet.create({
   instructions: {
     alignItems: "center",
     justifyContent: "center",
-  },
-  refreshButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    height: Constants.BUTTONHEIGHT,
-    width: 100,
-    backgroundColor: Constants.LIGHTGRAY,
-    marginTop: 30,
-    borderRadius: Constants.BORDERRADIUS,
   },
 });

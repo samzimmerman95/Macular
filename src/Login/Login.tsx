@@ -10,7 +10,7 @@ import {
   Keyboard,
   Alert,
   Image,
-  ActivityIndicator,
+  PixelRatio,
 } from "react-native";
 import firebase from "../../firebase/firebaseSetup";
 import { withNavigation } from "react-navigation";
@@ -75,19 +75,19 @@ class Login extends React.Component<any, any> {
                 ref={(input) => (this.nextInput = input)}
               ></TextInput>
               <TouchableOpacity
-                style={styles.submitButton}
+                style={styles.button}
                 onPress={() => this.login()}
               >
                 <Text style={Constants.BUTTONTEXT.buttonText}> Login </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.submitButton}
+                style={styles.button}
                 onPress={() => this.props.navigation.navigate("SignUp")}
               >
                 <Text style={Constants.BUTTONTEXT.buttonText}> Sign up </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.submitButton}
+                style={styles.button}
                 onPress={() => this.props.navigation.navigate("ForgotPassword")}
               >
                 <Text style={Constants.BUTTONTEXT.buttonText}>
@@ -138,11 +138,11 @@ const styles = StyleSheet.create({
     paddingLeft: Constants.INPUTPADLEFT,
     borderRadius: Constants.BORDERRADIUS,
   },
-  submitButton: {
+  button: {
     alignItems: "center",
     justifyContent: "center",
     height: Constants.BUTTONHEIGHT,
-    width: 180,
+    width: 180 * PixelRatio.getFontScale(),
     backgroundColor: Constants.LIGHTGRAY,
     marginTop: 20,
     borderRadius: Constants.BORDERRADIUS,

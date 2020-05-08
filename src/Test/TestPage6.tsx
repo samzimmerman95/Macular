@@ -6,6 +6,7 @@ import {
   Dimensions,
   FlatList,
   TouchableOpacity,
+  PixelRatio,
 } from "react-native";
 import firebase from "../../firebase/firebaseSetup";
 import * as Constants from "../../Constants";
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: Constants.BUTTONHEIGHT,
-    width: 100,
+    width: 100 * PixelRatio.getFontScale(),
     backgroundColor: Constants.LIGHTGRAY,
     marginTop: 30,
     borderRadius: Constants.BORDERRADIUS,

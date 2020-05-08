@@ -6,6 +6,7 @@ import {
   Dimensions,
   Text,
   TouchableOpacity,
+  PixelRatio,
 } from "react-native";
 import { withNavigation } from "react-navigation";
 import firebase from "../../firebase/firebaseSetup";
@@ -40,7 +41,6 @@ class TestGrid extends React.Component<any, any> {
   }
 
   submitChangesToFirebase() {
-    console.log("submitChanges() called");
     let userDoc = firebase
       .firestore()
       .collection("tests")
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: Constants.BUTTONHEIGHT,
-    width: 100,
+    width: 100 * PixelRatio.getFontScale(),
     backgroundColor: Constants.LIGHTGRAY,
     marginTop: 30,
     borderRadius: Constants.BORDERRADIUS,
