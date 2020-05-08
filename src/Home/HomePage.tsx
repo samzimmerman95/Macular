@@ -31,7 +31,7 @@ export default class HomePage extends React.Component<any, any> {
       "didFocus",
       this.updateOnNewData.bind(this)
     );
-    // let user = firebase.auth().currentUser;
+
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         if (this._isMounted) {

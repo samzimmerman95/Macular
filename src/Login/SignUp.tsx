@@ -19,30 +19,15 @@ class SignUp extends React.Component<any, any> {
   constructor(props) {
     super(props);
     this.state = {
-      date: new Date(),
-      formattedDate: "",
-      showPicker: false,
       fullName: "",
       email: "",
       password: "",
       confirmedPassword: "",
+      yearOfBirth: "",
     };
-    this.setDate = this.setDate.bind(this);
-    this.showDatePicker = this.showDatePicker.bind(this);
     this.signUp = this.signUp.bind(this);
   }
   nextInput = {};
-
-  showDatePicker() {
-    Keyboard.dismiss();
-    this.setState({ showPicker: true });
-  }
-
-  setDate(event, date) {
-    //let formattedDate = (date.getMonth()+1) + '/' + date.getDate() + '/' + date.getFullYear();
-    this.setState({ date: date });
-    this.setState({ formattedDate: new Date(date).toLocaleDateString() });
-  }
 
   getUser() {
     return firebase.auth().currentUser;
@@ -63,12 +48,6 @@ class SignUp extends React.Component<any, any> {
   }
 
   async signUp() {
-    console.log("Full name: ", this.state.fullName);
-    console.log("email: ", this.state.email);
-    console.log("password: ", this.state.password);
-    console.log("password confirmed: ", this.state.confirmedPassword);
-    console.log("DOB: ", this.state.formattedDate);
-
     if (
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)
     ) {
@@ -84,7 +63,7 @@ class SignUp extends React.Component<any, any> {
         await firebase.firestore().collection("users").doc(user.uid).set({
           name: this.state.fullName,
           email: this.state.email,
-          DOB: this.state.formattedDate,
+          YOB: this.state.yearOfBirth,
         });
 
         auth.onAuthStateChanged(async (user) => {
@@ -146,19 +125,14 @@ class SignUp extends React.Component<any, any> {
             ></TextInput>
             <TextInput
               style={styles.textInput}
-              placeholder="Date of Birth"
+              placeholder="Year of Birth"
               autoCapitalize="none"
               ref={(input) => (this.nextInput[5] = input)}
-              value={this.state.formattedDate.toString()}
-              onFocus={this.showDatePicker}
+              keyboardType="number-pad"
+              returnKeyType="done"
+              onChangeText={(text) => this.setState({ yearOfBirth: text })}
             ></TextInput>
           </View>
-          {this.state.showPicker ? (
-            <DateTimePicker
-              value={this.state.date}
-              onChange={this.setDate}
-            ></DateTimePicker>
-          ) : null}
           <View style={styles.centeredItems}>
             <TouchableOpacity
               style={styles.submitButton}

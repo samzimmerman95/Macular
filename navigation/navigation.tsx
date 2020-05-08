@@ -96,6 +96,11 @@ const TabNavigator = createBottomTabNavigator(
     tabBarOptions: {
       activeTintColor: "rgb(0,122,255)",
       inactiveTintColor: "rgb(142,142,147)",
+      tabStyle: {
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-around",
+      },
     },
   }
 );

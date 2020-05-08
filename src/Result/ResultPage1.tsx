@@ -25,26 +25,6 @@ export default class ResultPage1 extends React.Component<any, any> {
     };
   }
 
-  componentDidMount() {
-    this.props.navigation.addListener(
-      "didFocus",
-      this.updateOnNewData.bind(this)
-    );
-  }
-  updateOnNewData() {
-    // When screen comes in focus, check if current data is correct compared to
-    // the database, and if not, go to the loading screen which will update it
-    let user = firebase.auth().currentUser;
-    let docRef = firebase.firestore().collection("tests").doc(user.uid).get();
-    docRef.then((doc) => {
-      if (doc.exists) {
-        let tests = doc.data().numTests;
-        if (tests != this.state.testDates.length) {
-          this.props.navigation.navigate("ResultLoad");
-        }
-      }
-    });
-  }
   renderItem = ({ item }) => {
     return (
       <View style={styles.view}>
@@ -161,15 +141,16 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {},
   upper: {
-    // flex: 2,
-    marginTop: 40,
-    height: Dimensions.get("window").width + 40,
+    flex: 3,
+    backgroundColor: "#abc",
+    // marginTop: 40,
+    // height: Dimensions.get("window").width + 40,
     // alignItems: "center",
-    // justifyContent: "center",
+    // justifyContent: "flex-start",
   },
   belowScroll: {
-    // flex: 1,
-    marginTop: 30,
+    flex: 1,
+    // marginTop: 30,
     flexDirection: "row",
   },
   grid: {
