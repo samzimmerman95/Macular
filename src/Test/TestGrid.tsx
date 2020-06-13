@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   PixelRatio,
+  ScrollView,
 } from "react-native";
 import { withNavigation } from "react-navigation";
 import firebase from "../../firebase/firebaseSetup";
@@ -24,19 +25,51 @@ class TestGrid extends React.Component<any, any> {
     }
 
     if (this.props.quadrant == "top_right") {
-      this.state = { dataValues: dataValues, dotIndex: 90 };
+      this.state = {
+        dataValues: dataValues,
+        dotIndex: 90,
+        activeCellPattern: [...Constants.TOPRIGHT],
+        activeCellIndex: 0,
+        selectedCellExists: false,
+        rowEnds: [...Constants.TOPRIGHTENDS],
+        numEmptyRows: 0,
+      };
     } else if (this.props.quadrant == "top_left") {
-      this.state = { dataValues: dataValues, dotIndex: 99 };
+      this.state = {
+        dataValues: dataValues,
+        dotIndex: 99,
+        activeCellPattern: [...Constants.TOPLEFT],
+        activeCellIndex: 0,
+        selectedCellExists: false,
+        rowEnds: [...Constants.TOPLEFTENDS],
+        numEmptyRows: 0,
+      };
     } else if (this.props.quadrant == "bottom_left") {
-      this.state = { dataValues: dataValues, dotIndex: 9 };
+      this.state = {
+        dataValues: dataValues,
+        dotIndex: 9,
+        activeCellPattern: [...Constants.BOTTOMLEFT],
+        activeCellIndex: 0,
+        selectedCellExists: false,
+        rowEnds: [...Constants.BOTTOMLEFTENDS],
+        numEmptyRows: 0,
+      };
     } else if (this.props.quadrant == "bottom_right") {
-      this.state = { dataValues: dataValues, dotIndex: 0 };
+      this.state = {
+        dataValues: dataValues,
+        dotIndex: 0,
+        activeCellPattern: [...Constants.BOTTOMRIGHT],
+        activeCellIndex: 0,
+        selectedCellExists: false,
+        rowEnds: [...Constants.BOTTOMRIGHTENDS],
+        numEmptyRows: 0,
+      };
     }
   }
 
-  updateNewValue(index) {
+  updateNewValue(index, value) {
     var dataCopy = [...this.state.dataValues];
-    dataCopy[index].value = (dataCopy[index].value + 1) % 3;
+    dataCopy[index].value = value;
     this.setState({ dataValues: dataCopy });
   }
 
@@ -67,17 +100,53 @@ class TestGrid extends React.Component<any, any> {
     });
   }
 
+  selectedCellExists = false;
+
+  seeButtonUpdate() {
+    this.setState({ activeCellIndex: this.state.activeCellIndex + 1 });
+    this.checkForCompletion();
+  }
+
+  fuzzyButtonUpdate() {
+    let cellIndex = this.state.activeCellPattern[this.state.activeCellIndex];
+    this.updateNewValue(cellIndex, 1);
+    this.setState({ activeCellIndex: this.state.activeCellIndex + 1 });
+    this.selectedCellExists = true;
+    this.checkForCompletion();
+  }
+
+  noSeeButtonUpdate() {
+    let cellIndex = this.state.activeCellPattern[this.state.activeCellIndex];
+    this.updateNewValue(cellIndex, 2);
+    this.setState({ activeCellIndex: this.state.activeCellIndex + 1 });
+    this.selectedCellExists = true;
+    this.checkForCompletion();
+  }
+
+  checkForCompletion() {
+    let cellIndex = this.state.activeCellPattern[this.state.activeCellIndex];
+    if (this.state.rowEnds.includes(cellIndex)) {
+      if (!this.selectedCellExists) {
+        this.setState({ numEmptyRows: this.state.numEmptyRows + 1 });
+        if (this.state.numEmptyRows == 1) {
+          this.submitChangesToFirebase();
+        }
+      }
+      this.selectedCellExists = false;
+    }
+  }
+
   renderItem = ({ item }) => {
     if (item.key == this.state.dotIndex) {
       return <TestGridDot />;
     } else {
-      return (
-        <TestGridCell
-          value={item.value}
-          updateFunction={this.updateNewValue.bind(this, item.key)}
-          index={item.key}
-        />
-      );
+      if (
+        item.key == this.state.activeCellPattern[this.state.activeCellIndex]
+      ) {
+        return <TestGridCell value={item.value} active={true} />;
+      } else {
+        return <TestGridCell value={item.value} active={false} />;
+      }
     }
   };
 
@@ -91,15 +160,39 @@ class TestGrid extends React.Component<any, any> {
             renderItem={this.renderItem}
             style={styles.cellContainer}
             numColumns={10}
-            extraData={this.state.dataValues}
+            extraData={this.state}
           />
         </View>
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={() => this.submitChangesToFirebase()}
-        >
-          <Text style={Constants.BUTTONTEXT.buttonText}> Submit </Text>
-        </TouchableOpacity>
+        <Text style={styles.textInstructions}>
+          Focus on highlighted cell. Can you see the dot?
+        </Text>
+        <View style={styles.buttons}>
+          <ScrollView
+            contentContainerStyle={{
+              width: Dimensions.get("window").width,
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={() => this.seeButtonUpdate()}
+            >
+              <Text style={Constants.BUTTONTEXT.buttonText}> Yes </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={() => this.fuzzyButtonUpdate()}
+            >
+              <Text style={Constants.BUTTONTEXT.buttonText}> It's Fuzzy </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={() => this.noSeeButtonUpdate()}
+            >
+              <Text style={Constants.BUTTONTEXT.buttonText}> No </Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
       </View>
     );
   }
@@ -112,6 +205,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  scroll: {
+    flexGrow: 1,
+  },
   cellContainer: {
     alignSelf: "center",
     alignContent: "center",
@@ -122,17 +218,29 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").width,
     width: Dimensions.get("window").width,
   },
+  buttons: {
+    flexDirection: "column",
+    width: Dimensions.get("window").width,
+    alignItems: "center",
+  },
   submitButton: {
     alignItems: "center",
     justifyContent: "center",
     height: Constants.BUTTONHEIGHT,
-    width: 100 * PixelRatio.getFontScale(),
+    width: 200 * PixelRatio.getFontScale(),
     backgroundColor: Constants.LIGHTGRAY,
-    marginTop: 30,
+    marginTop: 5,
+    marginBottom: 5,
     borderRadius: Constants.BORDERRADIUS,
   },
   buttonText: {
     fontSize: Constants.FONTSIZE,
+  },
+  textInstructions: {
+    fontSize: Constants.FONTSIZE,
+    marginLeft: 20,
+    marginRight: 20,
+    textAlign: "center",
   },
 });
 

@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
-import firebase from "../../../firebase/firebaseSetup";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import TestGrid from "../TestGrid";
 import * as Constants from "../../../Constants";
 
@@ -21,10 +13,6 @@ export default class TestPage2 extends React.Component<any, any> {
       <View style={styles.container}>
         <View style={styles.instructions}>
           <Text style={styles.title}>Left Eye Test</Text>
-          <Text style={styles.textInstructions}>
-            Focus on an empty cell, can you see the dot? If it is fuzzy/unclear,
-            tap that cell once. If you cannot see it, tap that cell twice.
-          </Text>
         </View>
         <TestGrid
           quadrant="top_right"

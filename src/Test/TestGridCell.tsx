@@ -27,28 +27,24 @@ export default class TestGridCell extends React.Component<any, any> {
     }
   }
 
-  changeValue() {
-    this.props.updateFunction(this.props.index);
-
-    if (this.state.color == Constants.LIGHTGRAY) {
-      this.setState({ color: "rgb(248,134,255)" });
-    } else if (this.state.color == "rgb(248,134,255)") {
-      this.setState({ color: "rgb(255,0,0)" });
-    } else if (this.state.color == "rgb(255,0,0)") {
+  updateColor() {
+    if (this.props.value == 0) {
       this.setState({ color: Constants.LIGHTGRAY });
+    } else if (this.props.value == 1) {
+      this.setState({ color: "rgb(248,134,255)" }); //#F886FF
+    } else if (this.props.value == 2) {
+      this.setState({ color: "rgb(255,0,0)" });
     }
   }
 
   render() {
     return (
-      <View style={[styles.container, { backgroundColor: this.state.color }]}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => this.changeValue()}
-        >
-          <Text></Text>
-        </TouchableOpacity>
-      </View>
+      <View
+        style={[
+          this.props.active ? styles.active : styles.container,
+          { backgroundColor: this.state.color },
+        ]}
+      />
     );
   }
 }
@@ -58,6 +54,13 @@ const styles = StyleSheet.create({
     height: dim,
     width: dim,
     margin: margin,
+  },
+  active: {
+    height: dim,
+    width: dim,
+    margin: margin,
+    borderWidth: 5,
+    borderColor: "red",
   },
   button: {
     height: dim,

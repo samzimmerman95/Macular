@@ -21,9 +21,9 @@ export default class TestPage1 extends React.Component<any, any> {
       <View style={styles.container}>
         <Text style={styles.title}>Testing Instructions</Text>
         <Text style={styles.instructions}>
-          Hold phone at a normal arms reach. It is important you keep your phone
-          in the same place to ensure consistent results. You will test one eye
-          at a time, first we will test the left eye.
+          Hold your device at a normal arms reach. It is important you keep your
+          phone in the same place to ensure consistent results. You will test
+          one eye at a time, first we will test the left eye.
         </Text>
         <Text></Text>
         <Text style={styles.instructions}>Close your right eye.</Text>
