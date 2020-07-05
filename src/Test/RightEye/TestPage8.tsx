@@ -21,10 +21,6 @@ export default class TestPage8 extends React.Component<any, any> {
       <View style={styles.container}>
         <View style={styles.instructions}>
           <Text style={styles.title}>Right Eye Test</Text>
-          <Text style={styles.textInstructions}>
-            Focus on an empty cell, can you see the dot? If it is fuzzy/unclear,
-            tap that cell once. If you cannot see it, tap that cell twice.
-          </Text>
         </View>
         <TestGrid
           quadrant="top_left"

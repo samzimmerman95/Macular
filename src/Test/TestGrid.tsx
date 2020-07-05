@@ -164,7 +164,7 @@ class TestGrid extends React.Component<any, any> {
           />
         </View>
         <Text style={styles.textInstructions}>
-          Focus on highlighted cell. Can you see the dot?
+          Focus on highlighted cell. Can you see the blue dot?
         </Text>
         <View style={styles.buttons}>
           <ScrollView

@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   circle: {
-    height: dim - dim / 10,
-    width: dim - dim / 10,
+    height: dim - dim / 20,
+    width: dim - dim / 20,
     borderRadius: dim / 2,
     backgroundColor: "rgb(0,0,255)",
   },

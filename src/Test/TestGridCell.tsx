@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     height: dim,
     width: dim,
     margin: margin,
-    borderWidth: 5,
+    borderWidth: dim / 2,
     borderColor: "red",
   },
   button: {
