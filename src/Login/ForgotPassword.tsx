@@ -38,6 +38,10 @@ class ForgotPassword extends React.Component<any, any> {
   render() {
     return (
       <View style={styles.container}>
+        <Text style={styles.instructionsTop}>
+          Swipe down from top to dismiss.
+        </Text>
+
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={styles.container}>
             <Text style={styles.instructions}>
@@ -83,6 +87,11 @@ const styles = StyleSheet.create({
   instructions: {
     fontSize: Constants.FONTSIZE,
     textAlign: "center",
+  },
+  instructionsTop: {
+    fontSize: Constants.FONTSIZE,
+    textAlign: "center",
+    paddingTop: 50,
   },
   submitButton: {
     alignItems: "center",
